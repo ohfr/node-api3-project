@@ -1,5 +1,7 @@
 const db = require("../users/userDb");
 
+const postDb = require("../posts/postDb");
+
 const validateUserId = () => {
     return async (req, res, next) => {
       let user = await db.getById(req.params.id);
@@ -8,7 +10,7 @@ const validateUserId = () => {
         req.user = user;
         next();
       } else {
-        return res.status(400).json({message: "invalid user ID"});
+        return res.status(404).json({message: "invalid user ID"});
       };
     };
   };
@@ -37,8 +39,23 @@ const validateUserId = () => {
     };
   };
 
+  
+const validatePostId = () =>{
+    return async (req, res, next) => {
+      let post = await postDb.getById(req.params.id);
+  
+      if (post) {
+        req.post = post;
+        next();
+      } else {
+        return res.status(404).json({message: "No post with specified ID"})
+      }
+    }
+  }
+
 module.exports = {
     validatePost,
     validateUser,
-    validateUserId
+    validateUserId,
+    validatePostId
 }

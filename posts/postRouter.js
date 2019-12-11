@@ -2,26 +2,45 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  // do your magic!
+const { validatePostId, validatePost } = require("../Middleware/validate");
+
+const db = require("./postDb");
+
+router.get('/', async (req, res) => {
+  let post = await db.get();
+
+  if (post) {
+    res.json(post);
+  } else {
+    next("Internal Error");
+  };
+
 });
 
-router.get('/:id', (req, res) => {
-  // do your magic!
+router.get('/:id',validatePostId(), async (req, res) => {
+  res.json(req.post);
 });
 
-router.delete('/:id', (req, res) => {
-  // do your magic!
+router.delete('/:id',validatePostId(), async (req, res) => {
+  let deletedPost = await db.remove(req.params.id);
+
+  if (deletedPost) {
+    res.status(200).json(deletedPost);
+  } else {
+    next("Internal Error");
+  };
+
 });
 
-router.put('/:id', (req, res) => {
-  // do your magic!
+router.put('/:id',validatePostId(), validatePost(), async (req, res) => {
+  let updatedPost = await db.update(req.params.id, req.body);
+
+  if (updatedPost) {
+    res.status(200).json(updatedPost);
+  } else {
+    next("Internal Error");
+  };
+  
 });
-
-// custom middleware
-
-function validatePostId(req, res, next) {
-  // do your magic!
-}
 
 module.exports = router;

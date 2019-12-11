@@ -15,6 +15,7 @@ router.post('/', validateUser(), async (req, res) => {
   } else {
     next("Internal Error");
   };
+  
 });
 
 router.post('/:id/posts', validatePost(), async(req, res) => {
@@ -24,6 +25,7 @@ router.post('/:id/posts', validatePost(), async(req, res) => {
   } else {
     next("Internal Error");
   };
+
 });
 
 router.get('/', async (req, res) => {
@@ -33,10 +35,12 @@ router.get('/', async (req, res) => {
   } else {
       next("Internal Error");
   };
+
 });
 
 router.get('/:id', validateUserId(),(req, res) => {
   res.status(200).json(req.user);
+
 });
 
 router.get('/:id/posts',validateUserId(),async(req, res) => {
@@ -47,6 +51,7 @@ router.get('/:id/posts',validateUserId(),async(req, res) => {
   } else {
     next("Intenal Error");
   };
+
 });
 
 router.delete('/:id',validateUserId(),async (req, res) => {
@@ -57,6 +62,7 @@ router.delete('/:id',validateUserId(),async (req, res) => {
   } else {
     next("Internal Error");
   };
+
 });
 
 router.put('/:id',validateUserId(), validateUser(), async (req, res) => {
@@ -67,6 +73,7 @@ router.put('/:id',validateUserId(), validateUser(), async (req, res) => {
   } else {
     next("Internal Error");
   };
+
 });
 
 module.exports = router;

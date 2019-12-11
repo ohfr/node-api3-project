@@ -3,12 +3,15 @@ const express = require("express");
 const server = require("./server");
 const logger = require("./Middleware/logger");
 const userRouter = require("./users/userRouter");
+const postRouter = require("./posts/postRouter");
 
 server.use(logger());
 
 server.use(express.json());
 
 server.use("/users", userRouter);
+
+server.use("/posts", postRouter);
 
 server.use((req,res) => {
     res.status(404).json({message: "Page Not Found"})
